@@ -1,0 +1,42 @@
+.tools {
+  background-color: #faf9f7;
+  text-align: -webkit-center;
+  margin-top: 15px;
+}
+
+.mood-board-height {
+  height: 100vh;
+}
+
+.mood-headers {
+  font-family: "Rock Salt", cursive;
+  text-align: -webkit-center;
+}
+
+p {
+  font-family: Roboto, sans-serif;
+  color: #ba6f4d;
+}
+
+.fa-trash {
+  background-color: #faf9f7;
+}
+
+.fa-plus-circle {
+  color: #ba6f4d;
+}
+
+.button-styles {
+  background-color: #a2a182;
+  font-family: Roboto, sans-serif;
+  font-size: 10px;
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.moodboard-section {
+  font-family: "Rock Salt", cursive;
+  background-color: #faf9f7;
+  margin-top: 15px;
+}

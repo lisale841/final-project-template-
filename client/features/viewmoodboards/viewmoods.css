@@ -1,0 +1,6 @@
+.add-button {
+  top: calc(100% / 2 - 10px);
+  right: 0;
+  border: none;
+  background-color: #faf9f7;
+}
