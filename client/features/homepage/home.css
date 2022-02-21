@@ -1,0 +1,38 @@
+.heading-background {
+  /* background-image: url("../../images/background-mood.png"); */
+  background-repeat: no-repeat;
+  height: 200px;
+  background-size: contain;
+  background-position: center, center;
+  color: white;
+}
+
+@media (min-width: 576px) {
+  .heading-background {
+    height: 400px;
+  }
+}
+
+.about-section {
+  font-family: Roboto, sans-serif;
+  background-color: #faf9f7;
+  text-align: -webkit-center;
+}
+
+.about-circle {
+  width: 110px;
+}
+
+.mood-header {
+  font-size: 20px;
+  text-decoration-line: underline;
+}
+
+.quote-header {
+  color: #ba6f4d;
+  flex-wrap: wrap;
+}
+
+.share-mood {
+  font-size: 40px;
+}

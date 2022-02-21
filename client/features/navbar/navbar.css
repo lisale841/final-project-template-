@@ -1,0 +1,40 @@
+.logo-img {
+  height: 50px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+}
+
+.nav-dark-background {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.fa-bars {
+  background-color: #a2a182;
+  color: white;
+  font-size: 22px;
+  border: none;
+  border-radius: 6px;
+}
+
+.nav-bar {
+  background-color: #a2a182;
+  font-family: Roboto, sans-serif;
+  font-size: 10px;
+}
+
+.nav-links {
+  display: inherit;
+  margin-left: 120px;
+  color: white;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.nav-sidebar {
+  max-width: 100%;
+}
