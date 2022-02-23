@@ -4,8 +4,28 @@
   margin-top: 15px;
 }
 
-.mood-board-height {
-  height: 100vh;
+.mood-board-container {
+  position: relative;
+}
+
+.mood-board-container .mood-board-icons {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.mood-board-boundary {
+  height: 75vh;
+  overflow: auto;
+}
+
+.mood-board-boundary .mood-board {
+  height: 800px;
+  width: 1400px;
+  transform-origin: 0 0;
+  background-color: white;
 }
 
 .mood-headers {

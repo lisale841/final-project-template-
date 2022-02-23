@@ -21,6 +21,7 @@ CREATE TABLE "public"."users" (
 CREATE TABLE "public"."moodBoard" (
 	"moodBoardId" serial NOT NULL,
 	"userId" integer NOT NULL,
+  "title" TEXT NOT NULL,
 	"createdAt" timestamptz NOT NULL DEFAULT NOW(),
 	CONSTRAINT "moodBoard_pk" PRIMARY KEY ("moodBoardId")
 ) WITH (

@@ -3,28 +3,6 @@ import './navbar.css';
 import Logo from '../../images/logo.png';
 
 export default class NavBar extends React.Component {
-  constructor() {
-    super();
-    this.handleCreateMoodBoard = this.handleCreateMoodBoard.bind(this);
-  }
-
-  handleCreateMoodBoard() {
-    const req = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userId: 1 })
-    };
-    fetch('/api/createmoodboard', req)
-      .then(response => response.json())
-      .then(result => {
-        window.location.href = '#createmoodboard';
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
 
   render() {
     return (
@@ -64,9 +42,6 @@ export default class NavBar extends React.Component {
                     <ul className="mt-5" data-bs-dismiss="modal">
                       <li className="">
                         <a className="" href="#moodboard" >My Mood Boards</a>
-                      </li>
-                      <li className="">
-                        <a className="" href="#createmoodboard" onClick={this.handleCreateMoodBoard}>Create a Mood Board</a>
                       </li>
                     </ul>
                   </div>

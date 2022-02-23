@@ -20,19 +20,13 @@ export default class App extends React.Component {
     });
   }
 
-  /**
-     * Listen for hash change events on the window object
-     * Each time the window.location.hash changes, parse
-     * it with the parseRoute() function and update state
-     */
-
   renderPage() {
     const { route } = this.state;
-    // console.log(route.params.get('moodboardId'));
+
     switch (route.path) {
       case '':
         return <Home/>;
-      case 'createmoodboard':
+      case 'editmoodboard':
         return <MoodBoard />;
       case 'moodboard':
         return <ViewMoodBoards/>;

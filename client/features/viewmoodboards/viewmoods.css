@@ -1,6 +1,19 @@
 .add-button {
-  top: calc(100% / 2 - 10px);
+  top: calc(100% / 2 - 18px);
   right: 0;
   border: none;
   background-color: #faf9f7;
+}
+
+.modal-pop {
+  margin: auto;
+}
+
+.modal-dialog-centered {
+  text-align: center;
+}
+
+.btn-green {
+  background-color: #a2a182;
+  color: white;
 }

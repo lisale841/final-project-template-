@@ -1,7 +1,49 @@
 import React from 'react';
 import './moodboard.css';
+import { parseRoute } from '../../../lib';
 
 export default class MoodBoard extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      zoom: 1,
+      moodBoardId: null,
+      moodBoardObjs: []
+    };
+
+    this.zoomIn = this.zoomIn.bind(this);
+    this.zoomOut = this.zoomOut.bind(this);
+  }
+
+  zoomIn() {
+    this.setState(({ zoom }) => ({ zoom: zoom + 0.25 }));
+  }
+
+  zoomOut() {
+    this.setState(({ zoom }) => ({ zoom: zoom - 0.25 }));
+  }
+
+  componentDidMount() {
+    const { params } = parseRoute(window.location.hash);
+    const moodBoardId = params.get('id');
+
+    const req = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    fetch(`/api/getmoodboard/${moodBoardId}`, req)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({ moodBoardId, moodBoardobjs: result });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
   render() {
     return (
       <>
@@ -32,10 +74,23 @@ export default class MoodBoard extends React.Component {
               </div>
             </div>
           </div>
-          <div className="moodboard-section col ms-lg-3 mt-3 p-3">
-            <div className="mood-board-height">
-
-              <h1 className="mood-headers">Create your own Mood</h1>
+          <div className="moodboard-section col col-lg-9 mt-3 p-3">
+            <h1 className="mood-headers">Edit your own Mood</h1>
+            <div className="mood-board-container">
+              <div className="mood-board-icons me-3 mt-3">
+                <button className="btn btn-dark p-1 px-2 mb-2" onClick={this.zoomIn}>
+                  <i className="fas fa-plus"></i>
+                </button>
+                <button className="btn btn-dark p-1 px-2" onClick={this.zoomOut}>
+                  <i className="fas fa-minus"></i>
+                </button>
+              </div>
+              <div className="mood-board-boundary">
+                <div className="mood-board" style={{ transform: `scale(${this.state.zoom})` }}>
+                  {/* TODO: Fill board with objects based on MoodObjects will be implemented in the
+                  next few features */}
+                </div>
+              </div>
             </div>
           </div>
         </div>
