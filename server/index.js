@@ -90,21 +90,60 @@ app.post('/api/auth/sign-in', (req, res, next) => {
 });
 
 app.post('/api/createmoodboard', (req, res, next) => {
-  const { userId } = req.body;
-  // console.log(userId);
+  const { userId, title } = req.body;
+
   if (!userId) {
     throw new ClientError(404, 'invalid user');
   }
   const sql = `
-        insert into "moodBoard" ("userId")
-        values ($1)
-        returning "userId", "moodBoardId", "createdAt"
+        insert into "moodBoard" ("userId", "title")
+        values ($1, $2)
+        returning "userId", "moodBoardId", "title", "createdAt"
       `;
-  const params = [userId];
+  const params = [userId, title];
   db.query(sql, params)
     .then(result => {
       const [moodBoard] = result.rows;
       res.status(200).json(moodBoard);
+    })
+    .catch(err => next(err));
+
+});
+
+app.get('/api/getmoodboards', (req, res, next) => {
+  const userId = 1; // to be removed once tokens are in place no sign in feature yet.
+  const sql = `
+        SELECT * FROM "moodBoard" WHERE "userId" = $1
+      `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const moodBoards = result.rows;
+      res.status(200).json(moodBoards);
+    })
+    .catch(err => next(err));
+
+});
+
+app.get('/api/getmoodboard/:moodboardId', (req, res, next) => {
+  const userId = 1; // to be removed once tokens are in place no sign in feature yet.
+  const moodBoardId = req.params.moodboardId;
+
+  if (!moodBoardId) {
+    throw new ClientError(404, 'invalid moodBoardId');
+  }
+
+  const sql = `
+    SELECT * FROM "moodBoard"
+    JOIN "moodObject"
+    ON "moodBoard"."moodBoardId"="moodObject"."moodBoardId"
+    WHERE "userId" = $1 AND "moodObject"."moodBoardId" = $2
+  `;
+  const params = [userId, moodBoardId];
+  db.query(sql, params)
+    .then(result => {
+      const moodBoards = result.rows;
+      res.status(200).json(moodBoards);
     })
     .catch(err => next(err));
 
