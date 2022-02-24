@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
+const uploadsMiddleware = require('./uploads-middleware');
+const sizeOf = require('image-size');
 
 const db = new pg.Pool({ // eslint-disable-line
   connectionString: process.env.DATABASE_URL,
@@ -148,6 +150,55 @@ app.get('/api/getmoodboard/:moodboardId', (req, res, next) => {
     .catch(err => next(err));
 
 });
+
+// upload codes from react-file-uploads
+
+app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
+
+  const { moodBoardId } = req.body;
+  if (!moodBoardId) {
+    throw new ClientError(400, 'moodboard id is a required field');
+  }
+  const url = `images/${req.file.filename}`;
+
+  // https://github.com/image-size/image-size
+
+  const dimensions = sizeOf(`server/public/${url}`);
+
+  const scale = 1;
+
+  const sql = `
+        insert into "moodObject" ("url", "moodBoardId"
+        , "height", "width")
+        values ($1, $2, $3, $4)
+        returning *
+      `;
+
+  const params = [url, moodBoardId,
+    (dimensions.height * scale), (dimensions.width * scale)];
+
+  db.query(sql, params)
+    .then(result => {
+      const [newImage] = result.rows;
+      res.status(200).json(newImage);
+    })
+    .catch(err => next(err));
+
+});
+
+app.get('/api/images', (req, res, next) => {
+  const sql = `
+    select *
+      from "moodObject"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+// end of file upload code
 
 app.use(errorMiddleware);
 
