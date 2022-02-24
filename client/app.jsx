@@ -1,6 +1,5 @@
 import React from 'react';
 import Home from './features/homepage';
-
 import ViewMoodBoards from './features/viewmoodboards';
 import MoodBoard from './features/moodboardpage';
 import NavBar from './features/navbar';

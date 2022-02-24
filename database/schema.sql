@@ -32,12 +32,13 @@ CREATE TABLE "public"."moodBoard" (
 
 CREATE TABLE "public"."moodObject" (
   "moodObjectId" serial NOT NULL,
-	"yCoordinates" float8 NOT NULL,
-	"xCoordinates" float8 NOT NULL,
+	"yCoordinates" float8 NOT NULL DEFAULT 0,
+	"xCoordinates" float8 NOT NULL DEFAULT 0,
 	"moodBoardId" integer NOT NULL,
-	"type" TEXT NOT NULL,
-	"scale" float8 NOT NULL,
-	"data" TEXT NOT NULL,
+	"url" TEXT,
+	"height" float8 NOT NULL,
+  "width" float8 NOT NULL,
+	"text" TEXT ,
   CONSTRAINT "moodObject_pk" PRIMARY KEY ("moodObjectId")
 ) WITH (
   OIDS=FALSE
