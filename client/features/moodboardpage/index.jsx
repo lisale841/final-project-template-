@@ -170,7 +170,7 @@ export default class MoodBoard extends React.Component {
       });
   }
 
-  renderMoodBoardObjs(moodObjs) {
+  renderMoodBoardObjs() {
     const { moodBoardObjs } = this.state;
     return moodBoardObjs.map(item => {
       const {
