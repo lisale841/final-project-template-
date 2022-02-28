@@ -165,7 +165,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 
   const dimensions = sizeOf(`server/public/${url}`);
 
-  const scale = 1;
+  const scale = 0.25;
 
   const sql = `
         insert into "moodObject" ("url", "moodBoardId"
@@ -186,19 +186,30 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 
 });
 
-app.get('/api/images', (req, res, next) => {
+// end of file upload code
+
+app.put('/api/mood-object', (req, res, next) => {
+  const { moodObject } = req.body;
+  if (!moodObject) {
+    throw new ClientError(400, 'moodObject is a required field');
+  }
+
+  const { height, width, xCoordinates, yCoordinates, moodBoardId, moodObjectId } = moodObject;
   const sql = `
-    select *
-      from "moodObject"
-  `;
-  db.query(sql)
+      UPDATE "moodObject"
+      SET "height" = $1, "width" = $2, "xCoordinates" = $3, "yCoordinates" = $4
+      WHERE "moodBoardId" = $5 AND "moodObjectId" = $6;
+    `;
+
+  const params = [height, width, xCoordinates, yCoordinates, moodBoardId, moodObjectId];
+
+  db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(200).json({ success: true });
     })
     .catch(err => next(err));
-});
 
-// end of file upload code
+});
 
 app.use(errorMiddleware);
 
