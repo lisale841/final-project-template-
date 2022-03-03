@@ -33,6 +33,7 @@ export default class ViewMoodBoards extends React.Component {
   }
 
   handleCreateMoodBoard() {
+
     const req = {
       method: 'POST',
       headers: {
@@ -60,7 +61,7 @@ export default class ViewMoodBoards extends React.Component {
 
   createMoodboardIcons() {
     return this.state.moodBoards.map(item => (
-      <div className="col col-sm-3 col-lg-2 mb-3" key={item.moodBoardId}>
+      <div className="col col-sm-3 mb-3" key={item.moodBoardId}>
         <button className="py-3 px-5" onClick={() => this.handleMoodBoardClick(item.moodBoardId)}>{item.title}</button>
       </div>
     ));
