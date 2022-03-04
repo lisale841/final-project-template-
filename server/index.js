@@ -8,6 +8,7 @@ const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
 const uploadsMiddleware = require('./uploads-middleware');
 const sizeOf = require('image-size');
+const https = require('https');
 
 const db = new pg.Pool({ // eslint-disable-line
   connectionString: process.env.DATABASE_URL,
@@ -159,30 +160,38 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   if (!moodBoardId) {
     throw new ClientError(400, 'moodboard id is a required field');
   }
-  const url = `images/${req.file.filename}`;
+  const fileUrl = req.file.location;
 
-  // https://github.com/image-size/image-size
+  https.get(fileUrl, function (response) {
+    const chunks = [];
+    response.on('data', function (chunk) {
+      chunks.push(chunk);
+    }).on('end', function () {
+      const buffer = Buffer.concat(chunks);
 
-  const dimensions = sizeOf(`server/public/${url}`);
+      // https://github.com/image-size/image-size
+      const dimensions = sizeOf(buffer);
 
-  const scale = 0.25;
+      const scale = 0.25;
 
-  const sql = `
-        insert into "moodObject" ("url", "moodBoardId"
-        , "height", "width")
-        values ($1, $2, $3, $4)
-        returning *
-      `;
+      const sql = `
+            insert into "moodObject" ("url", "moodBoardId"
+            , "height", "width")
+            values ($1, $2, $3, $4)
+            returning *
+          `;
 
-  const params = [url, moodBoardId,
-    (dimensions.height * scale), (dimensions.width * scale)];
+      const params = [fileUrl, moodBoardId,
+        (dimensions.height * scale), (dimensions.width * scale)];
 
-  db.query(sql, params)
-    .then(result => {
-      const [newImage] = result.rows;
-      res.status(200).json(newImage);
-    })
-    .catch(err => next(err));
+      db.query(sql, params)
+        .then(result => {
+          const [newImage] = result.rows;
+          res.status(200).json(newImage);
+        })
+        .catch(err => next(err));
+    });
+  });
 
 });
 
